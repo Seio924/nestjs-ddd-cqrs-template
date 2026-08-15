@@ -11,6 +11,7 @@ import { buildLoggerOptions } from './common/logging/logger-options';
 import { AppConfigModule } from './config/config-module';
 import { EnvSchema } from './config/env-validation';
 import { DatabaseModule } from './database/database-module';
+import { ArticleModule } from './article/article-module';
 
 @Module({
   imports: [
@@ -19,7 +20,7 @@ import { DatabaseModule } from './database/database-module';
     ThrottlerModule.forRoot({ throttlers: [{ ttl: THROTTLE_TTL_MS, limit: THROTTLE_LIMIT }] }),
     PassportModule,
     DatabaseModule,
-    // 도메인 모듈은 여기에 추가 (예: ArticleModule) — 샘플 도메인 참고
+    ArticleModule, // 샘플 도메인 — 복제해서 새 도메인 만들 때 참고
   ],
   providers: [
     JwtStrategy,
