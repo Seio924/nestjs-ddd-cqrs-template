@@ -1,0 +1,7 @@
+/** 에러 코드 <DOMAIN>_<REASON> (전역 유일, 매직스트링 금지) */
+export const ArticleErrorCode = {
+  NOT_FOUND: 'ARTICLE_NOT_FOUND',
+  ALREADY_PUBLISHED: 'ARTICLE_ALREADY_PUBLISHED',
+  NOT_EDITABLE: 'ARTICLE_NOT_EDITABLE',
+  INVALID_TITLE: 'ARTICLE_INVALID_TITLE',
+} as const;
