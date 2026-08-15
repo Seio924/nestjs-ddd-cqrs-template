@@ -1,0 +1,16 @@
+# dependencies
+node_modules/
+# build
+dist/
+build/
+# env
+.env
+.env.*
+!.env.example
+# logs
+*.log
+# os
+.DS_Store
+# editor
+.idea/
+*.swp
