@@ -49,6 +49,14 @@ src/
 
 ## 새 도메인 추가하는 법
 
-샘플 도메인(`article`)을 복제해 이름만 바꾸고 규칙을 채운 뒤, `app-module.ts`에 모듈을 등록하세요. 각 레이어의 역할과 규칙은 `.claude/` 문서를 참고하세요.
+샘플 도메인(`src/article`)을 복제해 이름만 바꾸고 규칙을 채운 뒤, `app-module.ts`에 모듈을 등록하세요. 다 익혔으면 `article`을 지우면 됩니다.
 
-> 아키텍처 상세: `.claude/architecture/` (설계 원칙·레이어·CQRS·리포지토리·에러 등)
+## 문서
+
+아키텍처·컨벤션의 전체 기준은 [`CLAUDE.md`](./CLAUDE.md)(인덱스)와 `.claude/` 폴더에 있습니다.
+
+- **아키텍처** `.claude/architecture/` — 설계 원칙·레이어·모듈·DDD·CQRS·리포지토리·에러·ID·페이지네이션
+- **컨벤션** `.claude/conventions/` — 네이밍·코드 스타일·Nest·테스트·강제·Git
+- **파운데이션** `.claude/foundation/` — 개요·API 계약·인증·로깅/보안·설정·Swagger·CI
+
+> `CLAUDE.md`는 Claude Code가 이 문서들을 자동으로 참조하도록 인덱싱합니다.
