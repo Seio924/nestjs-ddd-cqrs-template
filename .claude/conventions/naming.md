@@ -37,11 +37,26 @@ PascalCase + 역할 접미사. `ArticleCommandService`, `CreateArticleRequestBod
 
 - 동사로 시작한다.
 - boolean 반환은 `is` / `has` / `can` 으로 시작한다.
-- 조회는 의도를 드러낸다: `findById`(없으면 null) vs `getById`(없으면 예외)
+
+### 조회 메서드 이름 (레이어별)
+
+조회 이름은 두 가지가 정한다: **없으면 null이냐 예외냐**, 그리고 **어느 레이어냐**.
+
+| 레이어 | 단건 | 리스트 |
+|---|---|---|
+| **Repository** (애그리거트, infra) | `findById` · `findBy<Field>` — 없으면 **null** | `find<Nouns>(criteria)` |
+| **Command service** (자기 애그리거트 로드 헬퍼) | `get<Entity>` — 없으면 **예외** | (보통 repo `find<Nouns>`에 위임) |
+| **Query** (DTO 읽기, CQRS) | `get<화면>` — DTO 반환(null 가능) | `get<Nouns>` · `search<Nouns>` |
+
+- **키가 여럿인 repository**는 `By<Field>`로 키를 드러낸다: `findById` · `findBySlug`.
+- **command service가 자기 애그리거트 하나를 로드해 없으면 예외**를 던지는 헬퍼는 `get<Entity>`: `getArticle`. (`getById` 아님 — 대상을 이름에 드러내 호출부가 자명)
+- **리스트에는 null/예외 구분이 없다** — 0개는 정상(빈 배열). repo면 `find<Nouns>`, query면 `get<Nouns>`/`search<Nouns>`.
 
 ```ts
-findById(id: string): Promise<Article | null>
-getById(id: string): Promise<Article>            // 없으면 예외
-canEdit(article: Article): boolean
+findById(id: string): Promise<Article | null>                    // repository 단건 (없으면 null)
+findArticles(criteria: FindArticlesCriteria): Promise<Article[]> // repository 리스트
+private getArticle(id: string): Promise<Article>                 // command 로드+없으면 예외
+searchArticles(q: SearchArticlesQuery): Promise<SearchArticlesResult> // query 읽기(DTO)
+canEdit(article: Article): boolean                               // boolean = is/has/can
 publish(id: string): Promise<void>
 ```

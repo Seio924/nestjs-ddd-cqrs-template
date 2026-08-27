@@ -119,7 +119,7 @@ initializeTransactionalContext();   // 앱 부트스트랩 전에
 ```
 
 - 이 방식이 원자적 쓰기 교차를 한 트랜잭션에 묶어 **진짜 원자성**을 준다 (design-principles §4).
-- ⚠️ `@Transactional`은 프록시 기반이라 "같은 클래스 내부 직접 호출 시 무시"되는 함정은 Spring과 동일 → 주의.
+- ✅ **같은 클래스 내부 self-invocation도 트랜잭션이 걸린다.** typeorm-transactional은 프로토타입 메서드를 그 자리에서 교체(in-place)하기 때문 — 별도 프록시 객체가 아니라서, Spring AOP처럼 self-call이 우회되지 않는다. (0.5.0 소스·런타임 검증)
 - ⚠️ 단위 테스트에서 `@Transactional` 메서드는 실제 DB tx가 필요하므로 `jest.mock('typeorm-transactional')`로 데코레이터를 무력화하거나, 테스트 DB를 쓰는 통합 테스트로 검증한다.
 
 ---

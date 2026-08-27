@@ -31,5 +31,5 @@ app.enableCors({ origin: env.webOrigins, credentials: true });
 - `@Transactional()` 데코레이터(`typeorm-transactional`)를 쓴다 — Spring `@Transactional`과 같은 경험(AsyncLocalStorage/CLS). tx/manager를 파라미터로 넘기지 않아 **repository 시그니처가 깨끗**하다.
 - `main.ts`에서 `initializeTransactionalContext()`를 bootstrap 전에 **1회** 호출.
 - 트랜잭션 경계 = 비즈니스 단위, **application(command service)이 소유**(교차 도메인 원자성도 여기서).
-- ⚠️ 프록시 기반이라 **같은 클래스 내부 직접 호출은 트랜잭션이 안 걸린다**(주의).
+- ✅ 같은 클래스 내부 self-invocation도 트랜잭션이 걸린다 — typeorm-transactional이 프로토타입 메서드를 in-place로 교체하기 때문(Spring AOP 프록시와 다름).
 - 상세는 [repository-pattern](../architecture/repository-pattern.md) 참조.
