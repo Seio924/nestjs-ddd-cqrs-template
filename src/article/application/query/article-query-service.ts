@@ -1,8 +1,9 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ArticleNotFoundException } from '../../article-exceptions';
-import { ARTICLE_QUERY, ArticleQuery, ListArticlesQuery } from './article-query';
-import { GetArticleResult } from './get-article-result';
-import { ListArticlesResult } from './list-articles-result';
+import { ARTICLE_QUERY, ArticleQuery } from './article-query';
+import { GetArticleResult } from './dto/get-article-result';
+import { ListArticlesQuery } from './dto/list-articles-query';
+import { ListArticlesResult } from './dto/list-articles-result';
 
 /** 읽기 유스케이스 — Repository는 절대 쓰지 않는다(쓰기 전용). Query 통로로 위임 + 가드. */
 @Injectable()

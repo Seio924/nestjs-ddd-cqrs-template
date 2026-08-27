@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { ListArticlesResult } from '../../application/query/list-articles-result';
+import { ListArticlesResult } from '../../application/query/dto/list-articles-result';
 import { ArticleStatus } from '../../article-enum';
 
 export class ArticleListItemBody {

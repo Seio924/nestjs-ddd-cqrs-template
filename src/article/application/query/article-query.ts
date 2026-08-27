@@ -1,11 +1,6 @@
-import { GetArticleResult } from './get-article-result';
-import { ListArticlesResult } from './list-articles-result';
-
-/** 오프셋 페이지네이션 입력 (page: 0-based, take: 크기) */
-export interface ListArticlesQuery {
-  page: number;
-  take: number;
-}
+import { GetArticleResult } from './dto/get-article-result';
+import { ListArticlesQuery } from './dto/list-articles-query';
+import { ListArticlesResult } from './dto/list-articles-result';
 
 /**
  * 읽기 전용 통로 (CQRS). Repository와 별개 — 애그리거트 복원 없이 화면 모양대로 조회.

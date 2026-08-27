@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { GetArticleResult } from '../../application/query/get-article-result';
+import { GetArticleResult } from '../../application/query/dto/get-article-result';
 import { ArticleStatus } from '../../article-enum';
 
 /** 단건 응답 body. application의 Result를 interface 계약으로 변환(.of). */
