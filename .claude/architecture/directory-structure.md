@@ -35,11 +35,14 @@ article/
   application/                         # 유스케이스 배선
     command/
       article-command-service.ts       # 쓰기 유스케이스 (오케스트레이션도 여기)
-      <verb>-<noun>-command.ts         # 커맨드 객체 (입력)
+      dto/                             # command 입력/출력 데이터 타입 (서비스와 분리)
+        <verb>-<noun>-command.ts       # 커맨드 객체 (입력)
     query/
       article-query-service.ts         # 읽기 (엔티티 안 거침)
-      article-query.ts                 # 쿼리 포트(interface)
-      <verb>-<noun>-result.ts          # 쿼리 결과 DTO
+      article-query.ts                 # 쿼리 포트(interface) — 포트는 DTO 아님, dto/에 안 넣음
+      dto/                             # query 입력/출력 데이터 타입
+        <verb>-<noun>-query.ts         # 쿼리 객체 (입력)
+        <verb>-<noun>-result.ts        # 쿼리 결과 DTO (출력)
     adapter/                           # 남의 도메인 포트(문) — 교차 도메인 있을 때만
       <external>-adapter.ts
     service/                           # 기술 서비스 포트 — 필요 시
@@ -93,6 +96,25 @@ article/
 - **infra도 application처럼 역할별 하위 폴더**(repository/·query/·adapter/·service/)로 나눈다. infra는 구현이 모이는 가장 붐비는 레이어라 역할별 폴더가 필요하고, application(command/·query/·adapter/)과 대칭이 맞는다.
 - **TypeORM 엔티티는 `infrastructure/entity/`.** (도메인 엔티티 `article.ts`와 별개 파일 — 매퍼가 변환)
 - **외부 라이브러리(TypeORM·axios·SDK)를 import하는 파일은 무조건 infra.**
+
+### application DTO 배치·네이밍
+
+command/query **서비스**와 그 **입력/출력 데이터 타입**을 섞지 않는다. 데이터 타입은 각 side의 **`dto/` 하위 폴더**로 분리한다(interface/dto/와 같은 패턴, CQRS 분리 유지).
+
+- `application/command/dto/` — command 입력(커맨드 객체)·출력 데이터 타입
+- `application/query/dto/` — query 입력(쿼리 객체)·출력(result) 데이터 타입
+- **포트는 DTO가 아니다** — `query.ts`(쿼리 포트)·`adapter.ts`(어댑터 포트)·`service.ts`(기술 서비스 포트)는 dto/에 넣지 않고 자기 자리에 둔다.
+
+**네이밍 규칙** — 파일명을 가르는 기준은 "command/query"가 아니라 **"공유 값이냐 / 특정 유스케이스 전용이냐"**:
+
+| 종류 | 네이밍 | 예 |
+|---|---|---|
+| 입력 (쓰기) | `<verb>-<noun>-command.ts` | `publish-article-command.ts` |
+| 입력 (읽기) | `<verb>-<noun>-query.ts` | `search-articles-query.ts` |
+| 특정 유스케이스 출력 | `<verb>-<noun>-result.ts` | `get-article-detail-result.ts` |
+| 여러 유스케이스가 공유하는 값 | 서술형 이름 | `article-summary.ts` |
+
+> `article-summary`가 `-result`가 아닌 건, 한 유스케이스의 "결과"가 아니라 여러 쿼리가 **공유하는 값**이기 때문.
 
 ---
 
