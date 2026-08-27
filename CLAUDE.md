@@ -4,6 +4,8 @@ NestJS + TypeORM 백엔드 스타터. **Rich Domain 4-Layer + CQRS(읽기/쓰기
 
 이 파일은 아키텍처·컨벤션 문서의 인덱스다. 상세 기준은 아래 `.claude/` 문서들이며, `src/article`이 그 원칙을 그대로 구현한 **샘플 도메인**이다(복제해서 새 도메인을 만든다).
 
+> 🌐 English: [CLAUDE.en.md](./CLAUDE.en.md) — 각 문서의 영어판은 `*.en.md` 형제 파일이다.
+
 ## 문서 구조
 
 ### 🏛 아키텍처 (기준)
