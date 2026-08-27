@@ -1,0 +1,21 @@
+# 의존성 자동 업데이트. minor/patch는 한 PR로 묶어 노이즈를 줄이고, major는 개별 PR로(깨질 수 있어 따로 검토).
+version: 2
+updates:
+  - package-ecosystem: npm # pnpm-lock.yaml 포함
+    directory: "/"
+    schedule:
+      interval: weekly
+    groups:
+      minor-and-patch:
+        update-types:
+          - minor
+          - patch
+
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule:
+      interval: weekly
+    groups:
+      actions:
+        patterns:
+          - "*"
