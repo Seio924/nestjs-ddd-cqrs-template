@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { ArticleQuery, ListArticlesQuery } from '../../application/query/article-query';
-import { GetArticleResult } from '../../application/query/get-article-result';
-import { ListArticlesResult } from '../../application/query/list-articles-result';
+import { ArticleQuery } from '../../application/query/article-query';
+import { GetArticleResult } from '../../application/query/dto/get-article-result';
+import { ListArticlesQuery } from '../../application/query/dto/list-articles-query';
+import { ListArticlesResult } from '../../application/query/dto/list-articles-result';
 import { ArticleEntity } from '../entity/article.entity';
 
 /**
