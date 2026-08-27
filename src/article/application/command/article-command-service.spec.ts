@@ -4,7 +4,7 @@ jest.mock('typeorm-transactional', () => ({
   Transactional: () => (): void => {},
 }));
 
-import { ArticleNotFoundException } from '../../article-exceptions';
+import { ArticleNotEditableException, ArticleNotFoundException } from '../../article-exceptions';
 import { Article } from '../../domain/article';
 import { ArticleRepository } from '../../domain/article-repository';
 import { ArticleCommandService } from './article-command-service';
@@ -48,12 +48,52 @@ describe('ArticleCommandService', () => {
   });
 
   describe('update', () => {
+    it('DRAFT 글을 수정하면 제목·본문이 반영되어 저장된다', async () => {
+      const article = Article.create('a', '옛 제목', '옛 본문');
+      repo.findById.mockResolvedValue(article);
+
+      await service.update('id', { title: '새 제목', content: '새 본문' });
+
+      expect(article.title).toBe('새 제목');
+      expect(article.content).toBe('새 본문');
+      expect(repo.save).toHaveBeenCalledWith(article);
+    });
+
     it('없는 글을 수정하면 ArticleNotFoundException을 던진다', async () => {
       repo.findById.mockResolvedValue(null);
 
       await expect(service.update('nope', { title: '제목', content: '본문' })).rejects.toThrow(
         ArticleNotFoundException,
       );
+      expect(repo.save).not.toHaveBeenCalled();
+    });
+
+    it('발행된 글을 수정하면 도메인 규칙(ArticleNotEditableException)이 전파되고 저장하지 않는다', async () => {
+      const article = Article.create('a', '제목', '본문');
+      article.publish();
+      repo.findById.mockResolvedValue(article);
+
+      await expect(service.update('id', { title: '새', content: '새' })).rejects.toThrow(
+        ArticleNotEditableException,
+      );
+      expect(repo.save).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('delete', () => {
+    it('있는 글을 삭제하면 repo.delete를 호출한다', async () => {
+      repo.findById.mockResolvedValue(Article.create('a', '제목', '본문'));
+
+      await service.delete('id');
+
+      expect(repo.delete).toHaveBeenCalledWith('id');
+    });
+
+    it('없는 글을 삭제하면 ArticleNotFoundException을 던지고 삭제하지 않는다', async () => {
+      repo.findById.mockResolvedValue(null);
+
+      await expect(service.delete('nope')).rejects.toThrow(ArticleNotFoundException);
+      expect(repo.delete).not.toHaveBeenCalled();
     });
   });
 });
