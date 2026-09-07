@@ -7,6 +7,13 @@
   "engines": {
     "node": ">=22"
   },
+  "pnpm": {
+    "overrides": {
+      "js-yaml@>=5.0.0 <5.2.2": ">=5.2.2",
+      "fast-uri@>=3.0.0 <3.1.6": ">=3.1.6 <4",
+      "qs@>=6.14.2 <6.16.0": ">=6.16.0"
+    }
+  },
   "scripts": {
     "build": "nest build",
     "start": "nest start",
